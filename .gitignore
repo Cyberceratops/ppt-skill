@@ -3,6 +3,8 @@ package-lock.json
 package.json
 .vscode/
 
-# 运行时产物（png/ 保留用于 README 效果展示）
-ppt-output/*
-!ppt-output/png/
+# 文档素材（用户私有）
+doc/
+
+# 运行时产物
+ppt-output/
