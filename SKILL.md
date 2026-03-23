@@ -23,7 +23,7 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 
 | 能力 | 降级策略 |
 |------|---------|
-| **信息获取**（搜索/URL/文档/知识库） | 全部缺失 -> 依赖用户提供材料 |
+| **信息获取**（`.env` 中配置 `BRAVE_API_KEY` 或 `TAVILY_API_KEY` 即启用） | 未配置 -> 依赖用户提供材料 + agent 自身知识 |
 | **图片生成**（`.env` 中配置 `IMAGE_API_KEY` 即启用） | 未配置 -> 纯 CSS 装饰替代 |
 | **文件输出** | 必须有 |
 | **脚本执行**（Python/Node.js） | 缺失 -> 跳过自动打包和 SVG 转换 |
@@ -109,9 +109,49 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 
 > 盘点所有信息获取能力，全部用上。
 
+##### 环境感知：搜索能力检测
+
+开始搜索前，检测 `.env` 中搜索 API Key 是否已配置：
+
+| 条件 | 行为 |
+|------|------|
+| `BRAVE_API_KEY` 或 `TAVILY_API_KEY` 已配置 | 使用 `web_search.py` 调用搜索 API |
+| 两个都未配置 | 降级为依赖用户提供材料 + agent 自身知识 |
+
+##### 搜索调用方式
+
+**单次搜索**：
+```bash
+python SKILL_DIR/scripts/web_search.py --query "搜索关键词" --count 5
+```
+
+**批量搜索**（推荐，自动串行 + 速率控制）：
+```bash
+# 先写 queries.json
+cat > OUTPUT_DIR/queries.json << 'EOF'
+[
+  {"id": "q1", "query": "关键词1"},
+  {"id": "q2", "query": "关键词2"},
+  {"id": "q3", "query": "关键词3"}
+]
+EOF
+
+python SKILL_DIR/scripts/web_search.py \
+  --batch OUTPUT_DIR/queries.json \
+  --output-dir OUTPUT_DIR/search_results/
+```
+
+**内容提取**（仅 Tavily，用于深度阅读特定网页）：
+```bash
+python SKILL_DIR/scripts/web_search.py --extract "https://example.com/article"
+```
+
+脚本零额外依赖（仅 Python 标准库），自动从 `.env` 读取 API 配置。
+支持 Brave Search + Tavily 双引擎，auto 模式自动选择并降级。
+
 **执行**：
 1. 根据主题规划查询（数量参考复杂度表）
-2. 用所有可用的信息获取工具并行搜索
+2. 用 `web_search.py` 批量搜索，也可用 agent 自带搜索工具补充
 3. 每组结果摘要总结
 
 **产物**：搜索结果集合 JSON
