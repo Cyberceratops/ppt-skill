@@ -396,12 +396,12 @@
 
 | layout_hint | CSS grid-template | 卡片尺寸 |
 |-------------|------------------|---------|
-| 单一焦点 | 1fr / 1fr | 1200x580 |
-| 50/50 对称 | 1fr 1fr / 1fr | 各 590x580 |
-| 非对称两栏 (2/3+1/3) | 2fr 1fr / 1fr | 790+390 x 580 |
-| 三栏等宽 | repeat(3, 1fr) / 1fr | 各 387x580 |
-| 主次结合 | 2fr 1fr / 1fr 1fr | 790x580 + 390x280x2 |
-| 英雄式+3子 | 1fr / auto 1fr 然后 repeat(3,1fr) | 1200x260 + 387x300x3 |
+| 单一焦点 | 1fr / 1fr | 1200x530 |
+| 50/50 对称 | 1fr 1fr / 1fr | 各 590x530 |
+| 非对称两栏 (2/3+1/3) | 2fr 1fr / 1fr | 790+390 x 530 |
+| 三栏等宽 | repeat(3, 1fr) / 1fr | 各 387x530 |
+| 主次结合 | 2fr 1fr / 1fr 1fr | 790x530 + 390x255x2 |
+| 英雄式+3子 | 1fr / auto 1fr 然后 repeat(3,1fr) | 1200x240 + 387x270x3 |
 | 混合网格 | 自定义 grid-row/column span | 尺寸由内容决定 |
 
 间距: gap=20px | 圆角: border-radius=12px | 内边距: padding=24px

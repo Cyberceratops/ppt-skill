@@ -42,9 +42,9 @@
 
 | 卡片数 | grid-template-columns | 单卡尺寸 |
 |-------|----------------------|---------|
-| 2 | 1fr 1fr | 590x520 |
-| 3 | repeat(3, 1fr) | 387x520 |
-| 4 | 1fr 1fr / 1fr 1fr (2x2) | 590x250 |
+| 2 | 1fr 1fr | 590x530 |
+| 3 | repeat(3, 1fr) | 387x530 |
+| 4 | 1fr 1fr / 1fr 1fr (2x2) | 590x255 |
 | 5 | repeat(3, 1fr) / repeat(2, 1fr) (3+2) | 混合 |
 
 ### 章节封面 (section)
@@ -63,7 +63,7 @@
 
 ## 7 种内容页布局
 
-所有基于内容区 (1200x560px, 起始坐标 40,100)。
+所有基于内容区 (1200x530px, 起始坐标 40,130)。
 
 ### 1. 单一焦点
 
@@ -71,7 +71,7 @@
 
 ```css
 .content-area { grid-template: 1fr / 1fr; }
-/* 卡片: 1200x560 */
+/* 卡片: 1200x530 */
 ```
 
 ### 2. 50/50 对称
@@ -80,7 +80,7 @@
 
 ```css
 .content-area { grid-template: 1fr / 1fr 1fr; }
-/* 左: 590x560 | 右: 590x560 */
+/* 左: 590x530 | 右: 590x530 */
 ```
 
 ### 3. 非对称两栏 (2/3 + 1/3)
@@ -89,7 +89,7 @@
 
 ```css
 .content-area { grid-template: 1fr / 2fr 1fr; }
-/* 主: 790x560 | 辅: 390x560 */
+/* 主: 790x530 | 辅: 390x530 */
 ```
 
 ### 4. 三栏等宽
@@ -98,7 +98,7 @@
 
 ```css
 .content-area { grid-template: 1fr / repeat(3, 1fr); }
-/* 卡1: 387x560 | 卡2: 387x560 | 卡3: 386x560 */
+/* 卡1: 387x530 | 卡2: 387x530 | 卡3: 386x530 */
 ```
 
 ### 5. 主次结合 (大 + 两小)
@@ -107,7 +107,7 @@
 
 ```css
 .content-area { grid-template: 1fr 1fr / 2fr 1fr; }
-/* 主: 790x560 (span 2 rows) | 辅1: 390x270 | 辅2: 390x270 */
+/* 主: 790x530 (span 2 rows) | 辅1: 390x255 | 辅2: 390x255 */
 ```
 
 主卡片需设置 `grid-row: 1 / -1;` 跨两行。
@@ -119,19 +119,19 @@
 **3子项版（最常用）**：
 ```css
 .content-area { grid-template: auto 1fr / repeat(3, 1fr); }
-/* 英雄: 1200x240 (span 3 cols) | 子1-3: 387x300 */
+/* 英雄: 1200x240 (span 3 cols) | 子1-3: 387x270 */
 ```
 
 **4子项版**：
 ```css
 .content-area { grid-template: auto 1fr / repeat(4, 1fr); }
-/* 英雄: 1200x240 (span 4 cols) | 子1-4: 285x300 */
+/* 英雄: 1200x240 (span 4 cols) | 子1-4: 285x270 */
 ```
 
 **2子项版**：
 ```css
 .content-area { grid-template: auto 1fr / 1fr 1fr; }
-/* 英雄: 1200x260 (span 2 cols) | 子1-2: 590x280 */
+/* 英雄: 1200x260 (span 2 cols) | 子1-2: 590x250 */
 ```
 
 英雄卡片需设置 `grid-column: 1 / -1;` 跨所有列。
@@ -143,7 +143,7 @@
 **2x3 网格**：
 ```css
 .content-area { grid-template: repeat(3, 1fr) / 1fr 1fr; }
-/* 6个卡片: 各 590x173 */
+/* 6个卡片: 各 590x163 */
 ```
 
 可通过 `grid-row`/`grid-column` 的 span 让个别卡片跨行/跨列，形成大小混搭效果。
