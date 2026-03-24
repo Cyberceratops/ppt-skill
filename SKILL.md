@@ -39,7 +39,7 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 | 变量 | 含义 | 获取方式 |
 |------|------|---------|
 | `SKILL_DIR` | 本 SKILL.md 所在目录的绝对路径 | 即触发 Skill 时读取 SKILL.md 的目录 |
-| `OUTPUT_DIR` | 产物输出根目录 | 用户当前工作目录下的 `ppt-output/`（首次使用时 `mkdir -p` 创建） |
+| `OUTPUT_DIR` | 产物输出根目录 | `SKILL_DIR/ppt-output/`（与 SKILL.md 同级，首次使用时 `mkdir -p` 创建） |
 
 后续所有路径均基于这两个变量，不再重复说明。
 
