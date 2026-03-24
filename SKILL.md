@@ -32,6 +32,29 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 
 ---
 
+## 执行者声明（谁做什么）
+
+本 Skill 中有两类操作，**绝不可混淆**：
+
+| 操作 | 执行者 | 说明 |
+|------|--------|------|
+| 需求调研问卷 | **AI 自身** | AI 阅读 Prompt 模板后，用自己的推理能力生成问卷并与用户交互 |
+| 大纲 JSON | **AI 自身** | AI 参考搜索结果（如有），用自己的推理能力撰写完整大纲 |
+| 策划稿 JSON | **AI 自身** | AI 消化搜索数据（如有），逐页设计卡片结构与内容填充 |
+| 风格 JSON | **AI 自身** | AI 参考 style-system.md 选择并输出完整风格定义 |
+| **每页 HTML 设计稿** | **AI 自身** | **AI 逐页手写完整 HTML，每页 150-500 行代码** |
+| 搜索资料 | **脚本** `web_search.py` | AI 准备查询词，调用脚本执行 |
+| 配图 | **脚本** `generate_image.py` | AI 准备 prompt，调用脚本执行 |
+| HTML 合并预览 | **脚本** `html_packager.py` | AI 直接调用 |
+| SVG 转换 | **脚本** `html2svg.py` | AI 直接调用 |
+| PPTX 打包 | **脚本** `svg2pptx.py` | AI 直接调用 |
+
+> **⛔ 禁止行为**：AI 不得编写 Python/Node.js/Shell 脚本来批量生成或模板化生成 HTML 设计稿。
+> 每页 HTML 必须由 AI 使用自身的推理和设计能力，结合策划稿 + 搜索数据（如有）+ 风格定义，逐页精心创作。
+> 模板化批量生成将导致内容空洞、设计雷同，完全违背「万元/页」的质量目标。
+
+---
+
 ## 路径约定
 
 整个流程中反复用到以下路径，在 Step 1 完成后立即确定：
@@ -160,13 +183,18 @@ python SKILL_DIR/scripts/web_search.py --extract "https://example.com/article"
 
 ### Step 3: 大纲策划
 
+> **前置数据加载（条件执行）**：
+> 检查 `OUTPUT_DIR/search_results/` 目录是否存在且包含 JSON 文件。
+> - **存在** → 读取所有 JSON 文件，提取标题、摘要、关键数据点，整理为「搜索资料摘要」，注入到 Prompt #2 的 `{{CONTEXT}}` 占位符中
+> - **不存在** → 依赖 AI 自身知识 + 用户提供的材料，`{{CONTEXT}}` 填入已知信息
+
 **执行**：使用 `references/prompts.md` Prompt #2（大纲架构师 v2.0）
 
 **方法论**：金字塔原理 -- 结论先行、以上统下、归类分组、逻辑递进
 
-**自检**：页数符合要求 / 每 part >= 2 页 / 要点有数据支撑
+**自检**：页数符合要求 / 每 part >= 2 页 / 要点有数据支撑（有搜索数据时必须引用具体数字）
 
-**产物**：`[PPT_OUTLINE]` JSON
+**产物**：`[PPT_OUTLINE]` JSON → 保存为 `OUTPUT_DIR/outline.json`
 
 ---
 
@@ -174,14 +202,24 @@ python SKILL_DIR/scripts/web_search.py --extract "https://example.com/article"
 
 > 将内容分配和策划稿生成合为一步。在思考每页应该放什么内容的同时，决定布局和卡片类型，更自然高效。
 
+> **前置数据加载（条件执行）**：
+> 检查 `OUTPUT_DIR/search_results/` 目录是否存在且包含 JSON 文件。
+> - **存在** → 读取所有 JSON 文件（如 Step 3 已读取可复用），将搜索素材精准匹配到大纲每一页
+> - **不存在** → 依赖 AI 自身知识填充内容，确保每张卡片的信息密度仍然达标
+
 **执行**：使用 `references/prompts.md` Prompt #3（内容分配与策划稿）
 
 **要点**：
-- 将搜索素材精准映射到每页
+- 有搜索素材时，将其精准映射到每页；无搜索素材时，用 AI 知识库填充
 - 为每页设计多层次内容结构（主卡片 40-100 字 + 数据亮点 + 辅助要点）
 - 同时确定 page_type / layout_hint / cards[] 结构
 - **每个内容页至少 3 张卡片 + 2 种 card_type + 1 张 data 卡片**
 - 布局选择参考 `references/bento-grid.md` 的决策矩阵
+
+**产物质量关卡**（不达标则补充后再进入下一步）：
+- 每个内容页 `content_summary.main_content` ≥ 40 字
+- 每个内容页 `data_highlights` 至少 1 条含具体数字的数据
+- 每个内容页 `cards[]` 数组 ≥ 3 张卡片
 
 向用户展示策划稿概览，建议等用户确认后再进入 Step 5。
 
@@ -318,14 +356,24 @@ python SKILL_DIR/scripts/generate_image.py \
 
 > **禁止跳过策划稿直接生成。** 每页必须先有 Step 4 的结构 JSON。
 
-**每页 Prompt 组装公式**：
-```
-Prompt #4 模板
-+ 风格定义 JSON（5a 产物）[必须]
-+ 该页策划稿 JSON（Step 4 产物，含 cards[]/card_type/position/layout_hint）[必须]
-+ 该页内容文本（Step 4 产物）[必须]
-+ 配图路径（5b 产物）[可选 -- 无配图时省略 IMAGE_INFO 块]
-```
+> **⛔ 禁止编写脚本批量生成。** AI 必须逐页手写完整的 HTML 代码（每页 150-500 行）。
+> 不得编写 Python/JS 模板脚本来循环生成 HTML。理由：模板脚本无法实现精细的
+> 卡片布局差异、数据可视化选型、装饰元素搭配，产出质量远低于 AI 逐页创作。
+
+**执行方式**（对每一页重复以下步骤）：
+1. 将 Prompt #4 中的占位符替换为本页的实际值：
+   - `{{STYLE_DEFINITION}}` → `OUTPUT_DIR/style.json` 的完整内容
+   - `{{PLANNING_JSON}}` → `OUTPUT_DIR/planning.json` 中本页的 JSON 对象
+   - `{{PAGE_CONTENT}}` → 本页策划稿中分配的详细内容文本
+   - `{{IMAGE_INFO}}` → 若用户要求了配图且本页有对应图片，填入图片绝对路径；否则省略此块
+2. AI 以替换后的完整 Prompt 作为创作指南，**手写该页的完整 HTML 代码**
+3. 将该页 HTML 写入 `OUTPUT_DIR/slides/slide_XX.html`
+4. 进入下一页，重复步骤 1-3
+
+**配图路径回填**（仅当用户在 Step 1 第 7 题选择了配图时）：
+- 检查 `OUTPUT_DIR/images/` 下是否存在本页对应的图片文件（如 `slide_01.png`）
+- **存在** → 将图片绝对路径填入 `<img src="...">` 标签，使用 Prompt #4 中的融入技法
+- **不存在**（生成失败或用户未要求配图）→ 该页不使用 `<img>` 标签，改用纯 CSS 装饰
 
 **核心设计约束**（完整清单见 Prompt #4 内部）：
 - 画布 1280x720px，overflow:hidden
@@ -344,6 +392,11 @@ Prompt #4 模板
 | **章节色彩递进** | Part 1 卡片主用 accent-1，Part 2 用 accent-2，Part 3 用 accent-3 ... 每章换一种 accent 主色 | 通过颜色让受众无意识感知章节切换 |
 | **封面-结尾呼应** | 结束页的视觉元素与封面页形成呼应（相同装饰图案、对称布局），给出完整闭环感 | 首尾呼应是最基本的叙事美学 |
 | **渐进揭示** | 同一概念跨多页展开时，视觉复杂度应递增（第1页简单色块 -> 第2页加数据 -> 第3页完整图表） | 引导观众逐步深入理解 |
+
+**产物质量关卡**：
+- 每页 HTML 代码量 ≥ 150 行（不足说明内容密度不够）
+- 每个内容页包含 ≥ 3 个 card `<div>`
+- 所有颜色值使用 CSS 变量（`var(--xxx)`），无硬编码色值
 
 **产物**：每页一个 HTML 文件 -> `OUTPUT_DIR/slides/`
 
@@ -443,12 +496,25 @@ ppt-output/
 
 ---
 
-## 质量自检
+## 步间质量关卡（Gate Check）
+
+每完成一步，AI 必须自检该步产物是否达标后才能进入下一步。
+
+| 步骤 | 关卡条件 | 不达标处理 |
+|------|---------|----------|
+| Step 2 | `search_results/` 下有 ≥ 3 个非空 JSON（若执行了搜索） | 补充搜索查询 |
+| Step 3 | `outline.json` 每个 content 条目含实质内容（非占位符） | 重新生成大纲 |
+| Step 4 | `planning.json` 每内容页 ≥ 3 卡片、main_content ≥ 40 字 | 补充内容 |
+| Step 5a | `style.json` 包含完整的颜色/字体/渐变定义 | 重新选择风格 |
+| Step 5b | `images/` 下至少有对应图片（仅当用户要求了配图时检查） | 降级为 CSS 装饰 |
+| Step 5c | 每页 HTML ≥ 150 行、包含 ≥ 3 个 card div | 重写该页 |
+
+## 质量自检（最终交付前）
 
 | 维度 | 检查项 |
 |------|-------|
 | 内容 | 每页 >= 2 信息卡片 / >= 60% 内容页含数据 / 章节有递进 |
-| 视觉 | 全局风格一致 / 配图风格统一 / 卡片不重叠 / 文字不溢出 |
+| 视觉 | 全局风格一致 / 配图风格统一（如有配图）/ 卡片不重叠 / 文字不溢出 |
 | 技术 | CSS 变量统一 / SVG 友好约束遵守 / HTML 可被 Puppeteer 渲染 / `pipeline-compat.md` 禁止清单检查 |
 
 ---
