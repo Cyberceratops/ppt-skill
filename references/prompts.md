@@ -489,6 +489,49 @@
 | 细边框卡片 | border: 1px solid var(--card-border) | 清晰的区域划分 |
 | 圆形图标底 | `<div>` 48px 圆形, accent 色 10% 透明度背景 + 内联 SVG 图标 | 替代纯文字列表 |
 
+#### Lucide 图标系统（替代手绘 SVG）
+
+**禁止手绘 SVG 图标。** 所有图标统一使用 Lucide 图标库（`references/icons/` 目录下 1940 个矢量图标）。通过 `scripts/icon_resolver.py` 按关键词智能匹配，或直接读取 SVG 文件内联。
+
+详细使用规范见 `references/icon-guide.md`，以下是 HTML 内联要点：
+
+```html
+<!-- 标准图标 + 容器写法 -->
+<div style="display:flex; align-items:center; gap:12px;">
+  <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+              background:rgba(34,211,238,0.1); border-radius:10px; flex-shrink:0;">
+    <!-- 从 references/icons/{icon-name}.svg 读取内容，替换 stroke 颜色 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+         fill="none" stroke="var(--accent-1)" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <!-- Lucide 图标的 path 内容 -->
+    </svg>
+  </div>
+  <div>
+    <div style="font-size:19px; font-weight:600; color:var(--text-primary);">卡片标题</div>
+    <div style="font-size:16px; color:var(--text-secondary);">描述文字</div>
+  </div>
+</div>
+```
+
+**图标使用决策**：
+
+| 卡片类型 | 图标使用方式 | 图标尺寸 |
+|---------|-------------|---------|
+| text（列表式） | 每个列表项左侧配图标，替代圆点 | 16-20px |
+| text（段落式） | 标题左侧或上方配语义图标 | 24-32px |
+| data | KPI 标签旁配语义图标 | 20-24px |
+| list | 每项一个图标，替代圆点标记 | 16-20px |
+| process | 步骤节点用图标替代数字 | 24-32px |
+| tag_cloud | 不使用图标 | - |
+| data_highlight | 可选：大数字旁配装饰图标 | 32-40px |
+
+**图标颜色规范**：
+- `stroke` 统一使用 `var(--accent-1)` 或 `var(--accent-2)`，与风格主题一致
+- 深色风格：图标容器背景 `rgba(255,255,255,0.05)`
+- 浅色风格：图标容器背景 accent 色 10% 透明度
+
+
 #### 统一页脚系统
 
 每页（封面和章节封面除外）底部必须有统一页脚：

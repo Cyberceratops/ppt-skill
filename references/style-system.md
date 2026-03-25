@@ -7,7 +7,7 @@
 ```json
 {
   "style_name": "风格名称",
-  "style_id": "dark_tech | xiaomi_orange | blue_white | royal_red | fresh_green | luxury_purple | minimal_gray | vibrant_rainbow",
+  "style_id": "corp_tech | mwc_expo | flat_report | flat_training | sci_tech_blue | event_blue",
   "background": {
     "primary": "#色值",
     "gradient_to": "#色值"
@@ -49,297 +49,238 @@
 
 ## 预置风格库
 
-### 1. 暗黑科技 (dark_tech)
+> 以下风格基于公司常用 PPT 模板提炼，结合通用设计原则调优。
+> 原始模板文件保存在 `doc/template/`，备份风格保存在 `references/style-system.backup.md`。
 
-适用场景：技术产品介绍、AI/SaaS 平台、数据平台、开发者工具
+### 1. 科技年终汇报 (corp_tech)
+
+适用场景：年终总结、科技主题汇报、技术成果展示、产品发布会
+
+提炼来源：`12年终[科技]系列汇报PPT` -- 深色背景 + 科技蓝橙配色
 
 ```json
 {
-  "style_name": "高阶暗黑科技风 (Premium Dark Mode)",
-  "style_id": "dark_tech",
-  "background": { "primary": "#0B1120", "gradient_to": "#0F172A" },
-  "card": { "gradient_from": "#1E293B", "gradient_to": "#0F172A", "border": "rgba(255,255,255,0.05)", "border_radius": 12 },
+  "style_name": "科技年终汇报 (Corporate Tech)",
+  "style_id": "corp_tech",
+  "background": { "primary": "#0A0E1A", "gradient_to": "#111827" },
+  "card": { "gradient_from": "#1E293B", "gradient_to": "#0F172A", "border": "rgba(255,255,255,0.06)", "border_radius": 12 },
   "text": { "primary": "#FFFFFF", "secondary": "rgba(255,255,255,0.7)", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#22D3EE", "#3B82F6"], "secondary": ["#FDE047", "#F59E0B"] },
-  "font_family": "PingFang SC, Microsoft YaHei, system-ui, sans-serif",
-  "grid_pattern": { "enabled": true, "size": 40, "dot_radius": 1, "dot_color": "#FFFFFF", "dot_opacity": 0.05 },
-  "decorations": { "corner_lines": true, "glow_effects": true, "description": "角落装饰线条 + 强调色模糊光晕" }
+  "accent": { "primary": ["#4472C4", "#5B9BD5"], "secondary": ["#ED7D31", "#FFC000"] },
+  "font_family": "'Alibaba PuHuiTi', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif",
+  "grid_pattern": { "enabled": true, "size": 40, "dot_radius": 1, "dot_color": "#FFFFFF", "dot_opacity": 0.04 },
+  "decorations": { "corner_lines": true, "glow_effects": true, "description": "蓝色光晕 + 橙色数据点缀，角落装饰线条，深邃科技感" }
 }
 ```
 
 ```css
 :root {
-  --bg-primary: #0B1120;
-  --bg-secondary: #0F172A;
+  --bg-primary: #0A0E1A;
+  --bg-secondary: #111827;
   --card-bg-from: #1E293B;
   --card-bg-to: #0F172A;
-  --card-border: rgba(255,255,255,0.05);
+  --card-border: rgba(255,255,255,0.06);
   --card-radius: 12px;
   --text-primary: #FFFFFF;
   --text-secondary: rgba(255,255,255,0.7);
-  --accent-1: #22D3EE;
-  --accent-2: #3B82F6;
-  --accent-3: #FDE047;
-  --accent-4: #F59E0B;
+  --accent-1: #4472C4;
+  --accent-2: #5B9BD5;
+  --accent-3: #ED7D31;
+  --accent-4: #FFC000;
 }
 ```
 
 ---
 
-### 2. 小米橙 (xiaomi_orange)
+### 2. 展会展览 (mwc_expo)
 
-适用场景：硬件产品、IoT 设备、消费电子、智能家居
+适用场景：巴塞罗那 MWC 展会、CES、产品展览、国际会议、品牌展示
+
+提炼来源：`MWC模板-1920X1080` -- 纯黑背景 + 蓝色天空渐变 + 展会大气感
 
 ```json
 {
-  "style_name": "小米橙 (Xiaomi Orange)",
-  "style_id": "xiaomi_orange",
-  "background": { "primary": "#1A1A1A", "gradient_to": "#111111" },
-  "card": { "gradient_from": "#2A2A2A", "gradient_to": "#1A1A1A", "border": "rgba(255,105,0,0.15)", "border_radius": 16 },
+  "style_name": "展会展览 (MWC Expo)",
+  "style_id": "mwc_expo",
+  "background": { "primary": "#000000", "gradient_to": "#0C1929" },
+  "card": { "gradient_from": "#151E2D", "gradient_to": "#0A1018", "border": "rgba(91,155,213,0.12)", "border_radius": 14 },
   "text": { "primary": "#FFFFFF", "secondary": "rgba(255,255,255,0.65)", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#FF6900", "#FF8C00"], "secondary": ["#FFFFFF", "#E0E0E0"] },
-  "font_family": "PingFang SC, Microsoft YaHei, system-ui, sans-serif",
+  "accent": { "primary": ["#5B9BD5", "#4472C4"], "secondary": ["#ED7D31", "#FFC000"] },
+  "font_family": "'Myriad Pro', '方正标雅宋简体', 'Microsoft YaHei', system-ui, sans-serif",
   "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": false, "glow_effects": false, "description": "纯净简约，大面积留白，圆形图标元素" }
+  "decorations": { "corner_lines": false, "glow_effects": true, "description": "纯黑到深蓝渐变，大面积图片氛围底图，科技光晕点缀，展会级大气视觉" }
 }
 ```
 
 ```css
 :root {
-  --bg-primary: #1A1A1A;
-  --bg-secondary: #111111;
-  --card-bg-from: #2A2A2A;
-  --card-bg-to: #1A1A1A;
-  --card-border: rgba(255,105,0,0.15);
-  --card-radius: 16px;
+  --bg-primary: #000000;
+  --bg-secondary: #0C1929;
+  --card-bg-from: #151E2D;
+  --card-bg-to: #0A1018;
+  --card-border: rgba(91,155,213,0.12);
+  --card-radius: 14px;
   --text-primary: #FFFFFF;
   --text-secondary: rgba(255,255,255,0.65);
-  --accent-1: #FF6900;
-  --accent-2: #FF8C00;
-  --accent-3: #FFFFFF;
-  --accent-4: #E0E0E0;
+  --accent-1: #5B9BD5;
+  --accent-2: #4472C4;
+  --accent-3: #ED7D31;
+  --accent-4: #FFC000;
 }
 ```
 
 ---
 
-### 3. 蓝白商务 (blue_white)
+### 3. 扁平插画汇报 (flat_report)
 
-适用场景：企业介绍、培训课件、教育材料、医疗/金融行业
+适用场景：月度/季度工作汇报、日常总结、部门汇报
+
+提炼来源：`月度工作汇报扁平插画风PPT模板` -- 白色背景 + 蓝色主题 + 扁平插画风
 
 ```json
 {
-  "style_name": "蓝白商务 (Blue White Business)",
-  "style_id": "blue_white",
-  "background": { "primary": "#FFFFFF", "gradient_to": "#F8FAFC" },
-  "card": { "gradient_from": "#F1F5F9", "gradient_to": "#E2E8F0", "border": "rgba(37,99,235,0.12)", "border_radius": 12 },
-  "text": { "primary": "#1E293B", "secondary": "#64748B", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#2563EB", "#1D4ED8"], "secondary": ["#059669", "#047857"] },
-  "font_family": "PingFang SC, Microsoft YaHei, system-ui, sans-serif",
+  "style_name": "扁平插画汇报 (Flat Report)",
+  "style_id": "flat_report",
+  "background": { "primary": "#FFFFFF", "gradient_to": "#F0F5FF" },
+  "card": { "gradient_from": "#F5F8FF", "gradient_to": "#EBF0FA", "border": "rgba(7,113,252,0.12)", "border_radius": 16 },
+  "text": { "primary": "#282828", "secondary": "#666666", "title_size": 28, "body_size": 14, "card_title_size": 20 },
+  "accent": { "primary": ["#0771FC", "#0563EB"], "secondary": ["#FF8C3A", "#FF6D1F"] },
+  "font_family": "'GEETYPE-XinGothicGB', 'OPPOSans', 'Microsoft YaHei', system-ui, sans-serif",
   "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": false, "glow_effects": false, "description": "清爽简洁，蓝色标题装饰条，卡片带浅色背景和细边框" }
+  "decorations": { "corner_lines": false, "glow_effects": false, "description": "清爽白底 + 蓝色标题装饰条，大圆角卡片，扁平化视觉，插画元素留白区" }
 }
 ```
 
 ```css
 :root {
   --bg-primary: #FFFFFF;
-  --bg-secondary: #F8FAFC;
-  --card-bg-from: #F1F5F9;
-  --card-bg-to: #E2E8F0;
-  --card-border: rgba(37,99,235,0.12);
-  --card-radius: 12px;
-  --text-primary: #1E293B;
-  --text-secondary: #64748B;
-  --accent-1: #2563EB;
-  --accent-2: #1D4ED8;
-  --accent-3: #059669;
-  --accent-4: #047857;
-}
-```
-
----
-
-### 4. 朱红宫墙 (royal_red)
-
-适用场景：文化/历史主题、政务汇报、品牌故事、中国风
-
-```json
-{
-  "style_name": "朱红宫墙 (Royal Red)",
-  "style_id": "royal_red",
-  "background": { "primary": "#8B0000", "gradient_to": "#5C0000" },
-  "card": { "gradient_from": "#A52A2A", "gradient_to": "#7A0000", "border": "rgba(255,215,0,0.15)", "border_radius": 8 },
-  "text": { "primary": "#FFF8E7", "secondary": "rgba(255,248,231,0.75)", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#FFD700", "#FFA500"], "secondary": ["#FFF8E7", "#F5E6C8"] },
-  "font_family": "PingFang SC, STSong, SimSun, Microsoft YaHei, serif",
-  "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": true, "glow_effects": false, "description": "金色角饰、祥云纹理，传统纹样装饰边框" }
-}
-```
-
-```css
-:root {
-  --bg-primary: #8B0000;
-  --bg-secondary: #5C0000;
-  --card-bg-from: #A52A2A;
-  --card-bg-to: #7A0000;
-  --card-border: rgba(255,215,0,0.15);
-  --card-radius: 8px;
-  --text-primary: #FFF8E7;
-  --text-secondary: rgba(255,248,231,0.75);
-  --accent-1: #FFD700;
-  --accent-2: #FFA500;
-  --accent-3: #FFF8E7;
-  --accent-4: #F5E6C8;
-}
-```
-
----
-
-### 5. 清新自然 (fresh_green)
-
-适用场景：环保/可持续发展、健康/医疗/养生、食品/农业、美妆/护肤
-
-```json
-{
-  "style_name": "清新自然 (Fresh Green)",
-  "style_id": "fresh_green",
-  "background": { "primary": "#F0FDF4", "gradient_to": "#ECFDF5" },
-  "card": { "gradient_from": "#FFFFFF", "gradient_to": "#F0FDF4", "border": "rgba(22,163,74,0.12)", "border_radius": 16 },
-  "text": { "primary": "#14532D", "secondary": "#4B5563", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#16A34A", "#059669"], "secondary": ["#F59E0B", "#D97706"] },
-  "font_family": "PingFang SC, Microsoft YaHei, system-ui, sans-serif",
-  "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": false, "glow_effects": false, "description": "轻柔圆角、叶片图标、自然渐变色块，清新透气感" }
-}
-```
-
-```css
-:root {
-  --bg-primary: #F0FDF4;
-  --bg-secondary: #ECFDF5;
-  --card-bg-from: #FFFFFF;
-  --card-bg-to: #F0FDF4;
-  --card-border: rgba(22,163,74,0.12);
+  --bg-secondary: #F0F5FF;
+  --card-bg-from: #F5F8FF;
+  --card-bg-to: #EBF0FA;
+  --card-border: rgba(7,113,252,0.12);
   --card-radius: 16px;
-  --text-primary: #14532D;
-  --text-secondary: #4B5563;
-  --accent-1: #16A34A;
-  --accent-2: #059669;
-  --accent-3: #F59E0B;
-  --accent-4: #D97706;
+  --text-primary: #282828;
+  --text-secondary: #666666;
+  --accent-1: #0771FC;
+  --accent-2: #0563EB;
+  --accent-3: #FF8C3A;
+  --accent-4: #FF6D1F;
 }
 ```
 
 ---
 
-### 6. 紫金奢华 (luxury_purple)
+### 4. 扁平插画培训 (flat_training)
 
-适用场景：时尚/奢侈品、高端服务/地产、设计/创意行业、品牌发布会
+适用场景：新员工培训、入职引导、内部培训课件、企业文化宣贯
 
-```json
-{
-  "style_name": "紫金奢华 (Luxury Purple)",
-  "style_id": "luxury_purple",
-  "background": { "primary": "#120A2E", "gradient_to": "#1A0B3D" },
-  "card": { "gradient_from": "#2D1B69", "gradient_to": "#1A0B3D", "border": "rgba(192,132,252,0.1)", "border_radius": 12 },
-  "text": { "primary": "#F5F3FF", "secondary": "rgba(245,243,255,0.7)", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#A855F7", "#7C3AED"], "secondary": ["#F59E0B", "#D97706"] },
-  "font_family": "PingFang SC, Microsoft YaHei, system-ui, sans-serif",
-  "grid_pattern": { "enabled": true, "size": 50, "dot_radius": 1, "dot_color": "#A855F7", "dot_opacity": 0.03 },
-  "decorations": { "corner_lines": true, "glow_effects": true, "description": "紫色光晕、金色点缀、钻石切割线条装饰，极致奢华感" }
-}
-```
-
-```css
-:root {
-  --bg-primary: #120A2E;
-  --bg-secondary: #1A0B3D;
-  --card-bg-from: #2D1B69;
-  --card-bg-to: #1A0B3D;
-  --card-border: rgba(192,132,252,0.1);
-  --card-radius: 12px;
-  --text-primary: #F5F3FF;
-  --text-secondary: rgba(245,243,255,0.7);
-  --accent-1: #A855F7;
-  --accent-2: #7C3AED;
-  --accent-3: #F59E0B;
-  --accent-4: #D97706;
-}
-```
-
----
-
-### 7. 极简灰白 (minimal_gray)
-
-适用场景：学术/研究报告、法务/合规、咨询/顾问报告、数据分析
+提炼来源：`蓝色扁平插画风新员工入职培训PPT` -- 白底蓝色 + 培训风格 + 活泼配色
 
 ```json
 {
-  "style_name": "极简灰白 (Minimal Gray)",
-  "style_id": "minimal_gray",
-  "background": { "primary": "#FAFAFA", "gradient_to": "#F5F5F5" },
-  "card": { "gradient_from": "#FFFFFF", "gradient_to": "#FAFAFA", "border": "rgba(0,0,0,0.08)", "border_radius": 8 },
-  "text": { "primary": "#171717", "secondary": "#737373", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#171717", "#404040"], "secondary": ["#DC2626", "#B91C1C"] },
-  "font_family": "'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif",
+  "style_name": "扁平插画培训 (Flat Training)",
+  "style_id": "flat_training",
+  "background": { "primary": "#FFFFFF", "gradient_to": "#F8FAFF" },
+  "card": { "gradient_from": "#FFFFFF", "gradient_to": "#F0F4FF", "border": "rgba(71,134,251,0.15)", "border_radius": 20 },
+  "text": { "primary": "#282828", "secondary": "#666666", "title_size": 28, "body_size": 14, "card_title_size": 20 },
+  "accent": { "primary": ["#4786FB", "#3B6FE0"], "secondary": ["#FF7043", "#FF5722"] },
+  "font_family": "'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif",
   "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": false, "glow_effects": false, "description": "纯净无装饰、大量留白、精确排版、红色仅用于关键数据强调" }
-}
-```
-
-```css
-:root {
-  --bg-primary: #FAFAFA;
-  --bg-secondary: #F5F5F5;
-  --card-bg-from: #FFFFFF;
-  --card-bg-to: #FAFAFA;
-  --card-border: rgba(0,0,0,0.08);
-  --card-radius: 8px;
-  --text-primary: #171717;
-  --text-secondary: #737373;
-  --accent-1: #171717;
-  --accent-2: #404040;
-  --accent-3: #DC2626;
-  --accent-4: #B91C1C;
-}
-```
-
----
-
-### 8. 活力彩虹 (vibrant_rainbow)
-
-适用场景：社交/娱乐平台、营销/推广材料、年轻品牌、创意方案
-
-```json
-{
-  "style_name": "活力彩虹 (Vibrant Rainbow)",
-  "style_id": "vibrant_rainbow",
-  "background": { "primary": "#FFFFFF", "gradient_to": "#FFF7ED" },
-  "card": { "gradient_from": "#FFFFFF", "gradient_to": "#FFF1E6", "border": "rgba(251,146,60,0.15)", "border_radius": 20 },
-  "text": { "primary": "#1C1917", "secondary": "#57534E", "title_size": 28, "body_size": 14, "card_title_size": 20 },
-  "accent": { "primary": ["#F97316", "#EC4899"], "secondary": ["#8B5CF6", "#06B6D4"] },
-  "font_family": "'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif",
-  "grid_pattern": { "enabled": false },
-  "decorations": { "corner_lines": false, "glow_effects": false, "description": "多彩渐变色块、圆润大圆角、活力四溢的卡片配色（每张卡片可用不同 accent 色）" }
+  "decorations": { "corner_lines": false, "glow_effects": false, "description": "清新白底 + 天蓝强调色，大圆角卡片(20px)，活泼扁平插画风，适合轻松的培训氛围" }
 }
 ```
 
 ```css
 :root {
   --bg-primary: #FFFFFF;
-  --bg-secondary: #FFF7ED;
+  --bg-secondary: #F8FAFF;
   --card-bg-from: #FFFFFF;
-  --card-bg-to: #FFF1E6;
-  --card-border: rgba(251,146,60,0.15);
+  --card-bg-to: #F0F4FF;
+  --card-border: rgba(71,134,251,0.15);
   --card-radius: 20px;
-  --text-primary: #1C1917;
-  --text-secondary: #57534E;
-  --accent-1: #F97316;
-  --accent-2: #EC4899;
-  --accent-3: #8B5CF6;
-  --accent-4: #06B6D4;
+  --text-primary: #282828;
+  --text-secondary: #666666;
+  --accent-1: #4786FB;
+  --accent-2: #3B6FE0;
+  --accent-3: #FF7043;
+  --accent-4: #FF5722;
+}
+```
+
+---
+
+### 5. 蓝色科技互联网 (sci_tech_blue)
+
+适用场景：互联网行业项目计划、技术方案、产品架构、开发者大会
+
+提炼来源：`蓝色科技风互联网行业项目计划PPT模板` -- 深蓝科技背景 + 青蓝渐变 + 数据驱动
+
+```json
+{
+  "style_name": "蓝色科技互联网 (Sci-Tech Blue)",
+  "style_id": "sci_tech_blue",
+  "background": { "primary": "#020838", "gradient_to": "#0A1252" },
+  "card": { "gradient_from": "#0F1A4A", "gradient_to": "#080E35", "border": "rgba(20,229,252,0.1)", "border_radius": 12 },
+  "text": { "primary": "#FFFFFF", "secondary": "rgba(255,255,255,0.7)", "title_size": 28, "body_size": 14, "card_title_size": 20 },
+  "accent": { "primary": ["#14E5FC", "#4472C4"], "secondary": ["#043BB9", "#0563C1"] },
+  "font_family": "'Reeji-CloudHeiDa-GB', 'GEETYPE-XinGothicGB', 'Maven Pro', 'Microsoft YaHei', system-ui, sans-serif",
+  "grid_pattern": { "enabled": true, "size": 48, "dot_radius": 1, "dot_color": "#14E5FC", "dot_opacity": 0.03 },
+  "decorations": { "corner_lines": true, "glow_effects": true, "description": "深蓝星空背景，青色/蓝色霓虹光效，科技粒子感，数据可视化主导" }
+}
+```
+
+```css
+:root {
+  --bg-primary: #020838;
+  --bg-secondary: #0A1252;
+  --card-bg-from: #0F1A4A;
+  --card-bg-to: #080E35;
+  --card-border: rgba(20,229,252,0.1);
+  --card-radius: 12px;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255,255,255,0.7);
+  --accent-1: #14E5FC;
+  --accent-2: #4472C4;
+  --accent-3: #043BB9;
+  --accent-4: #0563C1;
+}
+```
+
+---
+
+### 6. 蓝色立体活动策划 (event_blue)
+
+适用场景：品牌活动策划、营销推广方案、互联网活动、产品推广
+
+提炼来源：`蓝色立体风互联网活动策划方案PPT` -- 浅色背景 + 立体渐变 + 蓝色系 + 详尽数据
+
+```json
+{
+  "style_name": "蓝色立体活动策划 (Event Blue)",
+  "style_id": "event_blue",
+  "background": { "primary": "#F4F6FA", "gradient_to": "#EAEFF6" },
+  "card": { "gradient_from": "#FFFFFF", "gradient_to": "#F5F7FC", "border": "rgba(68,114,196,0.1)", "border_radius": 12 },
+  "text": { "primary": "#343434", "secondary": "#666666", "title_size": 28, "body_size": 14, "card_title_size": 20 },
+  "accent": { "primary": ["#4472C4", "#3B63B0"], "secondary": ["#ED7D31", "#D96A1F"] },
+  "font_family": "'GEETYPE-XinGothicGB', 'Reeji-CloudZhongDeng-GB', 'Microsoft YaHei', system-ui, sans-serif",
+  "grid_pattern": { "enabled": false },
+  "decorations": { "corner_lines": false, "glow_effects": false, "description": "浅灰蓝底，立体卡片阴影，蓝色渐变装饰条，橙色数据强调，信息密度高" }
+}
+```
+
+```css
+:root {
+  --bg-primary: #F4F6FA;
+  --bg-secondary: #EAEFF6;
+  --card-bg-from: #FFFFFF;
+  --card-bg-to: #F5F7FC;
+  --card-border: rgba(68,114,196,0.1);
+  --card-radius: 12px;
+  --text-primary: #343434;
+  --text-secondary: #666666;
+  --accent-1: #4472C4;
+  --accent-2: #3B63B0;
+  --accent-3: #ED7D31;
+  --accent-4: #D96A1F;
 }
 ```
 
@@ -351,15 +292,13 @@
 
 | 关键词匹配 | 推荐风格 |
 |-----------|---------|
-| AI、机器学习、深度学习、SaaS、云、平台、API、开发者、大模型、LLM、数据、算法 | dark_tech |
-| 手机、硬件、IoT、智能家居、芯片、穿戴、电子、家电、机器人 | xiaomi_orange |
-| 企业、公司、培训、教育、医疗、金融、银行、保险、制药、GLP、GMP、质量 | blue_white |
-| 文化、历史、国风、中国、政务、党建、品牌故事、非遗、传统 | royal_red |
-| 环保、绿色、可持续、健康、养生、食品、农业、有机、美妆、护肤、自然 | fresh_green |
-| 时尚、奢侈品、高端、地产、设计、创意、艺术、珠宝、定制 | luxury_purple |
-| 学术、研究、论文、报告、法务、合规、咨询、审计、数据分析、白皮书 | minimal_gray |
-| 社交、娱乐、营销、推广、年轻、潮流、游戏、直播、短视频、电商 | vibrant_rainbow |
-| 其他未匹配 | blue_white（最通用的默认风格） |
+| 年终总结、年度汇报、成果展示、KPI、OKR | corp_tech |
+| 展会、MWC、CES、展览、博览会、品牌展示、国际会议 | mwc_expo |
+| 月度汇报、季度总结、工作汇报、部门总结、日常 | flat_report |
+| 培训、入职、新人、课件、企业文化、内训、工作坊 | flat_training |
+| AI、互联网、科技项目、开发、SaaS、云、平台、API、大模型、LLM、数据、算法、架构 | sci_tech_blue |
+| 活动策划、营销、推广、品牌活动、市场方案、用户增长 | event_blue |
+| 其他未匹配 | flat_report（最通用的默认风格） |
 
 ## 自定义风格
 

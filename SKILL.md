@@ -45,6 +45,7 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 | **每页 HTML 设计稿** | **AI 自身** | **AI 逐页手写完整 HTML，每页 150-500 行代码** |
 | 搜索资料 | **脚本** `web_search.py` | AI 准备查询词，调用脚本执行 |
 | 配图 | **脚本** `generate_image.py` | AI 准备 prompt，调用脚本执行 |
+| 图标匹配 | **脚本** `icon_resolver.py` | AI 提供关键词，脚本返回匹配的 Lucide 图标 SVG |
 | HTML 合并预览 | **脚本** `html_packager.py` | AI 直接调用 |
 | SVG 转换 | **脚本** `html2svg.py` | AI 直接调用 |
 | PPTX 打包 | **脚本** `svg2pptx.py` | AI 直接调用 |
@@ -235,7 +236,7 @@ python SKILL_DIR/scripts/web_search.py --extract "https://example.com/article"
 
 **执行**：阅读 `references/style-system.md`，选择或推断风格
 
-根据主题关键词匹配 8 种预置风格之一（暗黑科技 / 小米橙 / 蓝白商务 / 朱红宫墙 / 清新自然 / 紫金奢华 / 极简灰白 / 活力彩虹），详细匹配规则和完整 JSON 定义见 `references/style-system.md`。
+根据主题关键词匹配 6 种预置风格之一（科技年终汇报 / 展会展览 / 扁平插画汇报 / 扁平插画培训 / 蓝色科技互联网 / 蓝色立体活动策划），详细匹配规则和完整 JSON 定义见 `references/style-system.md`。
 
 **产物**：风格定义 JSON -> 保存为 `OUTPUT_DIR/style.json`
 
@@ -324,14 +325,12 @@ python SKILL_DIR/scripts/generate_image.py \
 
 | PPT 风格 | 配图风格关键词 |
 |---------|--------------|
-| 暗黑科技 | dark tech background, neon glow, futuristic, digital, cyber |
-| 小米橙 | minimal dark background, warm orange accent, clean product shot, modern |
-| 蓝白商务 | clean professional, light blue, corporate, minimal, bright |
-| 朱红宫墙 | traditional Chinese, elegant red gold, ink painting, cultural |
-| 清新自然 | fresh green, organic, nature, soft light, watercolor |
-| 紫金奢华 | luxury, purple gold, premium, elegant, metallic |
-| 极简灰白 | minimal, grayscale, clean, geometric, academic |
-| 活力彩虹 | colorful, vibrant, energetic, playful, gradient, pop art |
+| 科技年终汇报 | dark tech background, blue neon glow, futuristic, digital, corporate |
+| 展会展览 | pure black background, exhibition, dramatic lighting, brand showcase, expo |
+| 扁平插画汇报 | clean white background, flat illustration, blue accent, professional, light |
+| 扁平插画培训 | bright white background, friendly illustration, training, educational, welcoming |
+| 蓝色科技互联网 | deep blue tech, neon cyan glow, digital, cyber, starry particles |
+| 蓝色立体活动策划 | light blue gray, 3D gradient, event planning, marketing, clean |
 
 ##### 按页面类型调整
 
@@ -350,10 +349,36 @@ python SKILL_DIR/scripts/generate_image.py \
 
 **产物**：`OUTPUT_DIR/images/` 下的配图文件
 
-#### 5c. 逐页 HTML 设计稿生成
+#### 5c. 图标匹配（在生成 HTML 之前）
 
-**执行**：使用 `references/prompts.md` Prompt #4 + `references/bento-grid.md`
+为策划稿中的每个卡片匹配合适的 Lucide 图标，供 HTML 设计稿使用。详见 `references/icon-guide.md`。
 
+```bash
+# 批量匹配：为每个卡片准备关键词
+cat > OUTPUT_DIR/icon_queries.json << 'EOF'
+[
+  {"id": "slide02_card1", "keywords": ["数据", "分析"]},
+  {"id": "slide02_card2", "keywords": ["增长", "趋势"]},
+  {"id": "slide03_card1", "keywords": ["安全", "防护"]}
+]
+EOF
+
+python SKILL_DIR/scripts/icon_resolver.py \
+  --batch OUTPUT_DIR/icon_queries.json \
+  --output-dir OUTPUT_DIR/icons_resolved \
+  --color "var(--accent-1)" --size 24
+```
+
+也可以单个匹配后直接获取 SVG：
+```bash
+python SKILL_DIR/scripts/icon_resolver.py "增长" --svg --color "var(--accent-1)" --size 24
+```
+
+**产物**：每张卡片对应的图标 SVG（保存到 `OUTPUT_DIR/icons_resolved/` 或直接内联到 HTML）
+
+#### 5d. 逐页 HTML 设计稿生成
+
+**执行**：使用 `references/prompts.md` Prompt #4 + `references/bento-grid.md` + `references/icon-guide.md`
 > **禁止跳过策划稿直接生成。** 每页必须先有 Step 4 的结构 JSON。
 
 > **⛔ 禁止编写脚本批量生成。** AI 必须逐页手写完整的 HTML 代码（每页 150-500 行）。
@@ -379,6 +404,7 @@ python SKILL_DIR/scripts/generate_image.py \
 - 画布 1280x720px，overflow:hidden
 - 所有颜色通过 CSS 变量引用，禁止硬编码
 - 凡视觉可见元素必须是真实 DOM 节点，图形优先用内联 SVG
+- **图标使用 Lucide 图标库**（`references/icons/`），禁止手绘 SVG 图标。通过 `icon_resolver.py` 匹配或直接读取 SVG 文件内联到 HTML
 - 禁止 `::before`/`::after` 伪元素用于视觉装饰、禁止 `conic-gradient`、禁止 CSS border 三角形
 - 配图融入设计：渐隐融合/色调蒙版/氛围底图/裁切视窗/圆形裁切（技法详见 Prompt #4）
 
@@ -480,7 +506,8 @@ pip install python-pptx lxml Pillow 2>/dev/null
 | 文件 | 何时阅读 | 关键内容 |
 |------|---------|---------|
 | `references/prompts.md` | 每步生成前 | 5 套 Prompt 模板（调研/大纲/策划/设计/备注）|
-| `references/style-system.md` | Step 5a | 8 种预置风格 + CSS 变量 + 风格 JSON 模型 |
-| `references/bento-grid.md` | Step 5c | 7 种布局精确坐标 + 5 种卡片类型 + 决策矩阵 |
+| `references/style-system.md` | Step 5a | 预置风格 + CSS 变量 + 风格 JSON 模型 |
+| `references/bento-grid.md` | Step 5d | 7 种布局精确坐标 + 5 种卡片类型 + 决策矩阵 |
+| `references/icon-guide.md` | Step 5c/5d | Lucide 图标系统使用指南 + 分类速查 + 内联规范 |
 | `references/method.md` | 初次了解 | 核心理念与方法论 |
-| `references/pipeline-compat.md` | **Step 5c 设计稿生成时** | CSS 禁止清单 + 图片路径 + 字号混排 + SVG text + 环形图 + svg2pptx 注意事项 |
+| `references/pipeline-compat.md` | **Step 5d 设计稿生成时** | CSS 禁止清单 + 图片路径 + 字号混排 + SVG text + 环形图 + svg2pptx 注意事项 |
