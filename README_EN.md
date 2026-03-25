@@ -4,6 +4,10 @@
 
 > Simulate a top-tier PPT design company's workflow — from a single sentence to professional-grade presentations.
 
+> **Expectations**: AI-generated PPTs reach 80-90% completion (solid structure, consistent style, data visualizations),
+> but minor details (text overflow, spacing, occasional layout quirks) still need human review.
+> Think of it as a **high-quality draft generator** — 25 min AI generation + 10 min human polish, instead of 8-16 hours from scratch.
+
 ## Showcase
 
 > Example output: "PPT Agent Skill Cost Reduction" (Blue White business style, 10 pages, ~25 min end-to-end):
@@ -113,15 +117,34 @@ ppt-agent-skill/
 
 ## Output
 
+All artifacts are written to `ppt-output/` (alongside SKILL.md).
+
+### Final Deliverables
+
+| File | Format | Description |
+|------|--------|-------------|
+| `presentation.pptx` | PPTX | Final presentation (right-click "Convert to Shape" in PPT 365 to edit) |
+| `preview.html` | HTML | Browser-viewable paginated preview |
+| `svg/*.svg` | SVG | Per-page vector files, can also be dragged into PPT |
+
+### Design Source Files
+
+| File | Format | Description |
+|------|--------|-------------|
+| `slides/slide_XX.html` | HTML | Per-page HTML design, 1280x720px fixed canvas, all styles inlined |
+| `images/slide_XX.png` | PNG | AI-generated illustrations, 16:9 widescreen |
+
+### Intermediate Artifacts
+
 | File | Description |
 |------|-------------|
-| `ppt-output/presentation.pptx` | PPTX file (right-click "Convert to Shape" in PPT 365) |
-| `ppt-output/svg/*.svg` | Per-page vector SVG |
-| `ppt-output/slides/*.html` | Per-page HTML source |
-| `ppt-output/images/*.png` | AI-generated illustrations |
-| `ppt-output/style.json` | Style configuration |
-| `ppt-output/outline.json` | Outline structure |
-| `ppt-output/planning.json` | Planning draft (detailed card data) |
+| `outline.json` | Outline structure (parts -> chapters -> pages) |
+| `planning.json` | Planning draft (card types, layouts, content per page) |
+| `style.json` | Style definition (color variables + fonts + gradients + decorations) |
+| `queries.json` | Search query list |
+| `search_results/*.json` | Search results |
+| `images/batch.json` | Image generation batch definition |
+| `notes.json` | Speaker notes (optional, injected into PPTX via `--notes`) |
 
 ## Usage
 

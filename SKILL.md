@@ -448,51 +448,7 @@ pip install python-pptx lxml Pillow 2>/dev/null
 
 ## 输出目录结构
 
-所有产物均输出到 `OUTPUT_DIR`（即 `SKILL_DIR/ppt-output/`）。
-
-### 最终交付物（给用户的）
-
-| 文件 | 格式 | 生成步骤 | 说明 |
-|------|------|---------|------|
-| `presentation.pptx` | PPTX | Step 6.3 `svg2pptx.py` | 最终演示文稿，PPT 365 中右键"转换为形状"可编辑文字和形状 |
-| `preview.html` | HTML | Step 6.1 `html_packager.py` | 浏览器打开即可翻页预览，包含所有页面 |
-| `svg/*.svg` | SVG | Step 6.2 `html2svg.py` | 逐页矢量文件，也可单独拖入 PPT 编辑 |
-
-### 设计稿源文件
-
-| 文件 | 格式 | 生成步骤 | 说明 |
-|------|------|---------|------|
-| `slides/slide_01.html` ~ `slide_XX.html` | HTML | Step 5c | 逐页 HTML 设计稿，1280x720px 固定画布，所有样式内联 |
-| `images/slide_XX.png` | PNG | Step 5b `generate_image.py` | AI 生成配图，16:9 宽屏，被 HTML 引用 |
-
-### 流程中间产物
-
-| 文件 | 格式 | 生成步骤 | 说明 |
-|------|------|---------|------|
-| `outline.json` | JSON | Step 3 | 大纲结构（parts → chapters → pages 三级层次） |
-| `planning.json` | JSON | Step 4 | 策划稿（每页的 cards/card_type/layout_hint 定义） |
-| `style.json` | JSON | Step 5a | 风格定义（颜色变量 + 字体 + 渐变 + 装饰元素） |
-| `queries.json` | JSON | Step 2 | 搜索查询列表（web_search.py --batch 输入） |
-| `search_results/*.json` | JSON | Step 2 `web_search.py` | 逐查询的搜索结果，供 Step 3-4 参考 |
-| `images/batch.json` | JSON | Step 5b | 配图批次定义（name + prompt 数组） |
-| `notes.json` | JSON | 可选 | 演讲者备注（页码 → 文本映射，`--notes` 参数注入 PPTX） |
-
-### 目录总览
-
-```
-ppt-output/
-  presentation.pptx    # [交付] 可编辑 PPTX
-  preview.html         # [交付] 浏览器翻页预览
-  svg/                 # [交付] 逐页矢量 SVG
-  slides/              # [源文件] 逐页 HTML 设计稿
-  images/              # [源文件] AI 配图 + batch.json
-  outline.json         # [中间] 大纲
-  planning.json        # [中间] 策划稿
-  style.json           # [中间] 风格定义
-  queries.json         # [中间] 搜索查询列表
-  search_results/      # [中间] 搜索结果
-  notes.json           # [可选] 演讲者备注
-```
+所有产物均输出到 `OUTPUT_DIR`（即 `SKILL_DIR/ppt-output/`），详见 README.md「输出产物」章节。
 
 ---
 

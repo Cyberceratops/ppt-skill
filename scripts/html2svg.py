@@ -496,6 +496,7 @@ def _check_node():
         if major < 18:
             print(f"Error: Node.js >= 18 required, got v{version}", file=sys.stderr)
             print("  Puppeteer and dom-to-svg require Node 18+", file=sys.stderr)
+            print("  Tip: check 'which node' and 'bash -lc \"node --version\"' for PATH issues", file=sys.stderr)
             return False
         return True
     except (FileNotFoundError, subprocess.TimeoutExpired):

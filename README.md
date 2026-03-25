@@ -4,6 +4,10 @@
 
 > 模拟万元/页级 PPT 设计公司的完整工作流，从一句话需求到专业级演示文稿。
 
+> **期望管理**：AI 生成的 PPT 能达到 80-90% 的完成度（结构合理、风格统一、数据可视化到位），
+> 但局部细节（文字溢出、间距微调、个别页面排版）仍需人工审查和微调。
+> 定位是**高质量初稿生成器**，将 8-16 小时的手工制作压缩到 25 分钟 AI 生成 + 10 分钟人工润色。
+
 ## 效果展示
 
 > 以「PPT Agent Skill 降本增效」为主题的示例输出（蓝白商务风格，10 页，全流程约 25 分钟）：
@@ -113,15 +117,34 @@ ppt-agent-skill/
 
 ## 输出产物
 
+所有产物输出到 `ppt-output/` 目录（与 SKILL.md 同级）。
+
+### 最终交付物
+
+| 文件 | 格式 | 说明 |
+|------|------|------|
+| `presentation.pptx` | PPTX | 最终演示文稿，PPT 365 中右键"转换为形状"可编辑文字和形状 |
+| `preview.html` | HTML | 浏览器打开即可翻页预览，包含所有页面 |
+| `svg/*.svg` | SVG | 逐页矢量文件，也可单独拖入 PPT 编辑 |
+
+### 设计稿源文件
+
+| 文件 | 格式 | 说明 |
+|------|------|------|
+| `slides/slide_XX.html` | HTML | 逐页 HTML 设计稿，1280x720px 固定画布，所有样式内联 |
+| `images/slide_XX.png` | PNG | AI 生成配图，16:9 宽屏 |
+
+### 流程中间产物
+
 | 文件 | 说明 |
 |------|------|
-| `ppt-output/presentation.pptx` | PPTX 文件（PPT 365 右键"转换为形状"可编辑） |
-| `ppt-output/svg/*.svg` | 单页矢量 SVG |
-| `ppt-output/slides/*.html` | 单页 HTML 源文件 |
-| `ppt-output/images/*.png` | AI 生成配图 |
-| `ppt-output/style.json` | 风格配置 |
-| `ppt-output/outline.json` | 大纲结构 |
-| `ppt-output/planning.json` | 策划稿（详细卡片数据） |
+| `outline.json` | 大纲结构（parts → chapters → pages） |
+| `planning.json` | 策划稿（每页的卡片类型、布局、内容定义） |
+| `style.json` | 风格定义（颜色变量 + 字体 + 渐变 + 装饰元素） |
+| `queries.json` | 搜索查询列表 |
+| `search_results/*.json` | 搜索结果 |
+| `images/batch.json` | 配图批次定义 |
+| `notes.json` | 演讲者备注（可选，`--notes` 参数注入 PPTX） |
 
 ## 使用方式
 
