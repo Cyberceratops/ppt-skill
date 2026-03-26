@@ -63,7 +63,29 @@ description: 专业 PPT 演示文稿全流程 AI 生成助手。模拟顶级 PPT
 | 变量 | 含义 | 获取方式 |
 |------|------|---------|
 | `SKILL_DIR` | 本 SKILL.md 所在目录的绝对路径 | 即触发 Skill 时读取 SKILL.md 的目录 |
-| `OUTPUT_DIR` | 产物输出根目录 | `SKILL_DIR/ppt-output/`（与 SKILL.md 同级，首次使用时 `mkdir -p` 创建） |
+| `OUTPUT_DIR` | 产物输出根目录 | `SKILL_DIR/ppt-output/{SAFE_TOPIC}_{YYYYMMDD}/`（首次使用时 `mkdir -p` 创建） |
+| `SAFE_TOPIC` | 安全主题名 | 从用户主题提取，规则见下方 |
+| `FILE_PREFIX` | 最终交付物文件名前缀 | `{SAFE_TOPIC}_{YYYYMMDD}`（如 `AI安全培训_20260326`） |
+
+### 主题名清洗规则（SAFE_TOPIC）
+
+从 Step 1 需求 JSON 的 topic 字段提取，按以下顺序处理：
+
+1. **截断**：取前 10 个字符（中文算 1 个字符）
+2. **去除危险字符**：删除 `/ \ : * ? " < > | .` 及控制字符
+3. **替换空白**：连续空格/制表符替换为单个下划线 `_`
+4. **去首尾下划线**：strip 两端的 `_`
+5. **兜底**：若清洗后为空串，使用 `ppt` 作为默认值
+
+> 此规则兼容 Windows（NTFS 禁用字符）和 Linux（ext4/xfs 仅禁止 `/` 和 `\0`）。
+
+**示例**：
+
+| 用户主题 | SAFE_TOPIC | OUTPUT_DIR |
+|---------|-----------|------------|
+| Dify 企业介绍 | `Dify_企业介绍` | `ppt-output/Dify_企业介绍_20260326/` |
+| AI 安全培训 PPT | `AI_安全培训_PPT` | `ppt-output/AI_安全培训_PPT_20260326/` |
+| 2026 年终总结/部门汇报 | `2026_年终总结部门汇` | `ppt-output/2026_年终总结部门汇_20260326/` |
 
 后续所有路径均基于这两个变量，不再重复说明。
 
@@ -465,7 +487,7 @@ pip install python-pptx lxml Pillow 2>/dev/null
 
 1. **合并预览** -- 运行 `html_packager.py`
    ```bash
-   python3 SKILL_DIR/scripts/html_packager.py OUTPUT_DIR/slides/ -o OUTPUT_DIR/preview.html
+   python3 SKILL_DIR/scripts/html_packager.py OUTPUT_DIR/slides/ -o OUTPUT_DIR/${FILE_PREFIX}_preview.html
    ```
 
 2. **SVG 转换** -- 运行 `html2svg.py`（DOM 直接转 SVG，保留 `<text>` 可编辑）
@@ -478,17 +500,17 @@ pip install python-pptx lxml Pillow 2>/dev/null
 
 3. **PPTX 生成** -- 运行 `svg2pptx.py`（OOXML 原生 SVG 嵌入，PPT 365 可编辑）
    ```bash
-   python3 SKILL_DIR/scripts/svg2pptx.py OUTPUT_DIR/svg/ -o OUTPUT_DIR/presentation.pptx --html-dir OUTPUT_DIR/slides/
+   python3 SKILL_DIR/scripts/svg2pptx.py OUTPUT_DIR/svg/ -o OUTPUT_DIR/${FILE_PREFIX}.pptx --html-dir OUTPUT_DIR/slides/
    ```
    PPT 365 中右键图片 -> "转换为形状" 即可编辑文字和形状。
 
 4. **通知用户** -- 告知产物位置和使用方式：
-   - `preview.html` -- 浏览器打开即可翻页预览
-   - `presentation.pptx` -- PPTX（右键 -> "转换为形状" 可编辑）
+   - `${FILE_PREFIX}_preview.html` -- 浏览器打开即可翻页预览
+   - `${FILE_PREFIX}.pptx` -- PPTX（右键 -> "转换为形状" 可编辑）
    - `svg/` -- 每个 SVG 也可单独拖入 PPT
    - **如果步骤 2-3 被降级跳过**，说明原因并告知用户手动安装 Node.js 后可重新运行
 
-**产物**：preview.html + svg/*.svg + presentation.pptx
+**产物**：`${FILE_PREFIX}_preview.html` + `svg/*.svg` + `${FILE_PREFIX}.pptx`
 
 ---
 
