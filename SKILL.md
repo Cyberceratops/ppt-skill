@@ -402,6 +402,13 @@ python SKILL_DIR/scripts/generate_image.py \
 
 #### 5c. 图标匹配（在生成 HTML 之前）
 
+> **⛔ 不可跳过。** `icon_resolver.py` 是纯本地脚本（读取本地 `tags.json` + `icons/` 目录），
+> **不依赖任何网络 API**。即使配图（Step 5b）失败、搜索（Step 2）失败，图标匹配仍然必须执行。
+> 禁止因其他步骤的网络失败而跳过图标匹配。
+>
+> **禁止使用 emoji 表情（如 📊💡🔒）替代图标。** emoji 在专业 PPT 中显得廉价，且在 PPTX 转换后渲染不一致。
+> 所有图标必须使用 Lucide SVG 内联方式。
+
 为策划稿中的每个卡片匹配合适的 Lucide 图标，供 HTML 设计稿使用。详见 `references/icon-guide.md`。
 
 ```bash

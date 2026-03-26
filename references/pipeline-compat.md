@@ -21,6 +21,9 @@
 | `filter: blur()` | 光栅化变位图 | `opacity` 或 `box-shadow` |
 | `content: '文字'` | 文字消失 | 真实 `<span>` |
 | CSS `background-image: url(...)` | dom-to-svg 忽略 | `<img>` 标签 |
+| `overflow-y: auto/scroll` | PPTX 无滚动条，溢出内容丢失 | `overflow: hidden` + 精简内容适配 |
+| `overflow-x: auto/scroll` | 同上 | 同上 |
+| `overflow: auto/scroll` | 同上 | 同上 |
 
 html2svg.py 兜底覆盖：前3项 + 伪元素 + conic-gradient + border三角形（共6种），但兜底效果远不如正确写法。
 
