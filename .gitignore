@@ -12,3 +12,6 @@ doc/*
 
 # 运行时产物
 ppt-output/
+
+# 用户指南（本地文档）
+user-guide.md
