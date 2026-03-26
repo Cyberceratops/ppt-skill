@@ -46,7 +46,8 @@
 | **6 步 Pipeline** | 模拟专业 PPT 公司完整工作流，端到端自动化 |
 | **智能搜索** | Brave + Tavily 双引擎，零依赖 Python 脚本，自动降级容错 |
 | **AI 配图** | Gemini 原生生图，16:9 宽屏，智能判断配图范围（封面/章节/结束页） |
-| **8 种预置风格** | 暗黑科技 / 小米橙 / 蓝白商务 / 朱红宫墙 / 清新自然 / 紫金奢华 / 极简灰白 / 活力彩虹 |
+| **6 种预置风格** | 科技年终汇报 / 展会展览 / 扁平插画汇报 / 扁平插画培训 / 蓝色科技互联网 / 蓝色立体活动策划（基于公司常用模板提炼） |
+| **Lucide 图标系统** | 1940 个矢量 SVG 图标，19 个 PPT 场景分类，智能中英文关键词匹配（`icon_resolver.py`） |
 | **7 种 Bento Grid 布局** | 卡片式灵活布局，内容驱动版式自动选择 |
 | **排版系统** | 7 级字号阶梯 + 中英文混排 + 60-30-10 色彩法则 |
 | **8 种数据可视化** | 进度条 / 环形图 / 迷你折线 / 对比柱 / 点阵图 / KPI 卡等（纯 CSS/SVG） |
@@ -103,13 +104,17 @@ ppt-agent-skill/
   .env.example                    # 环境变量模板
   references/
     prompts.md                    # 5 套 Prompt 模板
-    style-system.md               # 8 种预置风格 + CSS 变量
+    style-system.md               # 6 种预置风格 + CSS 变量 + 明度自动判断
     bento-grid.md                 # 7 种布局规格 + 6 种卡片类型
     pipeline-compat.md            # HTML→SVG→PPTX 管线兼容性规则
+    icon-guide.md                 # Lucide 图标系统使用指南（19 分类速查）
+    icons/                        # 1940 个 Lucide SVG 图标
+    icons/tags.json               # 图标标签索引
     method.md                     # 核心方法论
   scripts/
     web_search.py                 # 网页搜索（Brave + Tavily 双引擎）
     generate_image.py             # AI 配图（Gemini 原生生图）
+    icon_resolver.py              # 图标智能匹配（中英文关键词 → Lucide SVG）
     html_packager.py              # 多页 HTML 合并为翻页预览
     html2svg.py                   # HTML → SVG（dom-to-svg，文字可编辑）
     svg2pptx.py                   # SVG → PPTX（OOXML 原生形状）
